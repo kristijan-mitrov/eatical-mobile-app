@@ -1,43 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple_700"
     tools:context=".MainActivity">
 
-    <Button
+    <include
+        android:id="@+id/topDesign"
+        layout="@layout/top_design"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/cameraButton"
-        android:layout_width="wrap_content"
+        style="@style/outlineButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="40dp"
         android:text="@string/open_camera"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/transparentWhite"
+        app:cornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+        app:layout_constraintTop_toBottomOf="@id/topDesign"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/galleryButton"
-        android:layout_width="wrap_content"
+        style="@style/outlineButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
         android:layout_marginTop="32dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/transparentWhite"
         android:text="@string/open_gallery"
+        app:cornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cameraButton" />
+        app:layout_constraintTop_toBottomOf="@+id/cameraButton"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/intervalShooterButton"
-        android:layout_width="wrap_content"
+        style="@style/outlineButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="40dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/transparentWhite"
         android:text="@string/shoot_photos_on_interval"
+        app:cornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/galleryButton" />
+        app:layout_constraintTop_toBottomOf="@+id/galleryButton"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"/>
 
     <CheckBox
         android:id="@+id/restaurantCheckbox"
@@ -48,11 +75,13 @@
         android:layout_marginStart="12dp"
         android:text="@string/restaurant"
         android:checked="false"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        android:textColor="@color/white"
+
         app:layout_constraintEnd_toStartOf="@+id/foodCheckbox"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intervalShooterButton" />
+        app:layout_constraintTop_toBottomOf="@+id/intervalShooterButton"/>
 
     <CheckBox
         android:id="@+id/foodCheckbox"
@@ -62,14 +91,16 @@
         android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
         android:text="@string/food"
-        android:checked="false"
+        android:checked="true"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/menuCheckbox"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/restaurantCheckbox"
-        app:layout_constraintTop_toBottomOf="@+id/intervalShooterButton" />
+        app:layout_constraintTop_toBottomOf="@+id/intervalShooterButton"/>
 
     <CheckBox
         android:id="@+id/menuCheckbox"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -80,5 +111,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/foodCheckbox"
-        app:layout_constraintTop_toBottomOf="@+id/intervalShooterButton" />
+        app:layout_constraintTop_toBottomOf="@+id/intervalShooterButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

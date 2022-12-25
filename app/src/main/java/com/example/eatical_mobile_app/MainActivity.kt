@@ -88,13 +88,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 viewModel.state.value == MainStates.LOADING
             }
         }
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
