@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">eatical-mobile-app</string>
     <string name="open_camera">open camera</string>
     <string name="open_gallery">open gallery</string>
     <string name="shoot_photos_on_interval">shoot photos on interval</string>
