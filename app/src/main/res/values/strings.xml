@@ -12,4 +12,8 @@
     <string name="food">Food</string>
     <string name="menu">Menu</string>
     <string name="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="your_photo">Your photo</string>
+    <string name="photo_description">This photo will be send to the backend as type %s.</string>
+    <string name="send">Send</string>
+    <string name="back">Back</string>
 </resources>
