@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
@@ -96,21 +95,45 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         observeButtons()
+        observeCheckboxes()
         observeState()
     }
 
     private fun observeButtons() = with(binding){
         cameraButton.setOnClickListener {
-            viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
+            if(optionIsSelected()) viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
         }
 
         galleryButton.setOnClickListener {
-            viewModel.setState(MainStates.GETTING_GALLERY_PERMISSION)
+            if(optionIsSelected()) viewModel.setState(MainStates.GETTING_GALLERY_PERMISSION)
+        }
+
+        intervalShooterButton.setOnClickListener {
+//            if(optionIsSelected()) // TODO: Shoot Photos on interval
+        }
+    }
+
+    private fun observeCheckboxes() = with(binding){
+        restaurantCheckbox.setOnClickListener {
+            removeOptions()
+            restaurantCheckbox.isChecked = true
+        }
+
+        foodCheckbox.setOnClickListener {
+            removeOptions()
+            foodCheckbox.isChecked = true
+        }
+
+        menuCheckbox.setOnClickListener {
+            removeOptions()
+            menuCheckbox.isChecked = true
         }
     }
 
@@ -155,5 +178,15 @@ class MainActivity : AppCompatActivity() {
             .setNegativeButton(getString(R.string.okay)) { _, _ ->
                 finish()
             }.show()
+    }
+
+    private fun optionIsSelected(): Boolean = with(binding) {
+        return restaurantCheckbox.isChecked || foodCheckbox.isChecked || menuCheckbox.isChecked
+    }
+
+    private fun removeOptions() = with(binding){
+        restaurantCheckbox.isChecked = false
+        foodCheckbox.isChecked = false
+        menuCheckbox.isChecked = false
     }
 }
