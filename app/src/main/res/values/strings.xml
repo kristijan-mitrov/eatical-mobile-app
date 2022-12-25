@@ -5,4 +5,10 @@
     <string name="camera_permission_not_granted_error">In order to open the camera you need to grand permissions.</string>
     <string name="gallery_permission_not_granted_error">In order to open the gallery you need to grand permissions.</string>
     <string name="okay">Okay</string>
+    <string name="open_camera">Open camera</string>
+    <string name="open_gallery">Open gallery</string>
+    <string name="shoot_photos_on_interval">Shoot photos on interval</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="food">Food</string>
+    <string name="menu">Menu</string>
 </resources>
