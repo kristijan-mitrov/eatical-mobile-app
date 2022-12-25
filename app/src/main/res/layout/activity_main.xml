@@ -91,7 +91,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
         android:text="@string/food"
-        android:checked="true"
+        android:checked="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/menuCheckbox"
         app:layout_constraintHorizontal_bias="0.5"
