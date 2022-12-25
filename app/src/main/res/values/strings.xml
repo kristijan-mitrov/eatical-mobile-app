@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">eatical-mobile-app</string>
+    <string name="app_name">Eatical</string>
+    <string name="location_not_granted_error">In order to use this app you must grand locations.</string>
+    <string name="location_not_on_error">Please turn on your location and try again.</string>
+    <string name="camera_permission_not_granted_error">In order to open the camera you need to grand permissions.</string>
+    <string name="gallery_permission_not_granted_error">In order to open the gallery you need to grand permissions.</string>
+    <string name="okay">Okay</string>
 </resources>
