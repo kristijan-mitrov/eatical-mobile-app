@@ -86,7 +86,15 @@ dependencies {
 
     //MQTT
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+
+    //OSMDROID
+    implementation 'org.osmdroid:osmdroid-android:6.1.14'
+
+    //PREFERENCE
+    implementation "androidx.preference:preference-ktx:1.2.0"
+
 }
