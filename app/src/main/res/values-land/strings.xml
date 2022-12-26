@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="open_camera">open camera</string>
-    <string name="open_gallery">open gallery</string>
-    <string name="shoot_photos_on_interval">shoot photos on interval</string>
-    <string name="restaurant">Restaurant</string>
-    <string name="food">Food</string>
-    <string name="menu">Menu</string>
     <string name="choose_location">Choose location</string>
     <string name="done">Done</string>
     <string name="data_null">Data cannot be null</string>
