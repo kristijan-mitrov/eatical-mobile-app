@@ -93,10 +93,4 @@ dependencies {
     //PREFERENCE
     implementation "androidx.preference:preference-ktx:1.2.0"
 
-    //MAPBOX
-//    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.26.0'
-//    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:6.8.1') {
-//        exclude group: 'group_name', module: 'module_name'
-//    }
-//    implementation 'com.google.android.gms:play-services-location:21.0.1'
 }
