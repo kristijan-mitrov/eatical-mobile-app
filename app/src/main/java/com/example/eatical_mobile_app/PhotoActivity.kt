@@ -6,6 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.ImageFormat
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
@@ -26,6 +30,7 @@ class PhotoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoBinding
     private var fileUri: Uri? = null
     private val handler = Handler()
+    private var lastBrightness:Float = 100f
     private val runnable = object : Runnable {
         override fun run() {
             takePhoto()
@@ -71,6 +76,12 @@ class PhotoActivity : AppCompatActivity() {
         // TODO: Stefan needs to implement call to backend
     }
 
+    private fun sendBrightnessAlert() {
+        val type = "brightnessAlert"
+        Toast.makeText(this, "Brightness to low!", Toast.LENGTH_SHORT).show()
+        // TODO: Stefan needs to implement call to backend
+    }
+
     private fun openCamera() {
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
@@ -94,7 +105,31 @@ class PhotoActivity : AppCompatActivity() {
     }
 
     private fun takePhotoOnInterval() {
+        checkBrightness()
         handler.postDelayed(runnable, 5000)
+    }
+
+    private fun checkBrightness(){
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+            ?: return
+
+        val sensorEventListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
+                val brightness = event.values[0]
+                if (brightness < 20 && lastBrightness >= 20) {
+                    handler.removeCallbacks(runnable)
+                    sendBrightnessAlert()
+                }else if(brightness >= 20 && lastBrightness < 20){
+                    handler.postDelayed(runnable, 5000)
+                }
+                lastBrightness = brightness
+            }
+
+            override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+        }
+
+        sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     fun takePhoto() {

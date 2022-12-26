@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                     latitude = coordinates.latitude
                     Toast.makeText(
                         this,
-                        "New Location:(" + longitude.toString() + ", " + latitude.toString() + ")",
+                        "New Location:($longitude, $latitude)",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else throw Exception(R.string.coordinates_null.toString())
@@ -81,6 +81,16 @@ class MainActivity : AppCompatActivity() {
             openPhotoIntent("gallery")
         } else {
             showDialogue(R.string.gallery_permission_not_granted_error)
+        }
+    }
+
+    private val bodySensorsPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
+        } else {
+            showDialogue(R.string.camera_permission_not_granted_error)
         }
     }
 
@@ -144,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
         intervalShooterButton.setOnClickListener {
             lastButtonClicked = "intervalShooter"
-            if (optionIsSelected()) viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
+            if (optionIsSelected()) viewModel.setState(MainStates.GETTING_BODY_SENSORS_PERMISSION)
         }
 
         mapButton.setOnClickListener{
@@ -177,6 +187,7 @@ class MainActivity : AppCompatActivity() {
                 MainStates.GETTING_LOCATION_PERMISSION -> getLocationPermission()
                 MainStates.GETTING_CAMERA_PERMISSION -> getCameraPermission()
                 MainStates.GETTING_GALLERY_PERMISSION -> getGalleryPermission()
+                MainStates.GETTING_BODY_SENSORS_PERMISSION -> getBodySensorsPermission()
                 MainStates.CHOOSE_LOCATION -> getMap()
             }
         }
@@ -203,6 +214,10 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("latitude", latitude)
         intent.putExtra("longitude", longitude)
         launcher.launch(intent)
+    }
+
+    private fun getBodySensorsPermission() {
+        bodySensorsPermissionRequest.launch(Manifest.permission.BODY_SENSORS)
     }
 
     private fun showDialogue(@StringRes resId: Int) {
