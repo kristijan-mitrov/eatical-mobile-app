@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
+    private var lastButtonClicked: String? = null
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            openPhotoIntent("camera")
+            lastButtonClicked?.let { openPhotoIntent(it) }
         } else {
             showDialogue(R.string.camera_permission_not_granted_error)
         }
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            openGalley()
+            openPhotoIntent("gallery")
         } else {
             showDialogue(R.string.gallery_permission_not_granted_error)
         }
@@ -77,10 +78,6 @@ class MainActivity : AppCompatActivity() {
                 showDialogueAndFinish(R.string.location_not_on_error)
             }
         }
-    }
-
-    private fun openGalley() {
-        Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show()
     }
 
     private fun openPhotoIntent(source: String) {
@@ -114,6 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeButtons() = with(binding) {
         cameraButton.setOnClickListener {
+            lastButtonClicked = "camera"
             if (optionIsSelected()) viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
         }
 
@@ -122,7 +120,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         intervalShooterButton.setOnClickListener {
-            //            if(optionIsSelected()) // TODO: Shoot Photos on interval
+            lastButtonClicked = "intervalShooter"
+            if (optionIsSelected()) viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
         }
     }
 
@@ -186,8 +185,13 @@ class MainActivity : AppCompatActivity() {
             }.show()
     }
 
-    private fun optionIsSelected(): Boolean = with(binding) {
-        return restaurantCheckbox.isChecked || foodCheckbox.isChecked || menuCheckbox.isChecked
+    private fun optionIsSelected(): Boolean {
+        return if (binding.restaurantCheckbox.isChecked || binding.foodCheckbox.isChecked || binding.menuCheckbox.isChecked)
+            true
+        else {
+            Toast.makeText(this, "Please select a type", Toast.LENGTH_SHORT).show()
+            false
+        }
     }
 
     private fun removeOptions() = with(binding) {

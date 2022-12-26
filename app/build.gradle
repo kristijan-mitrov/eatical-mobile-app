@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.eatical_mobile_app"
-        minSdk 31
+        minSdk 29
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -86,4 +86,7 @@ dependencies {
 
     //MQTT
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'androidx.core:core:1.9.0'
+
 }
