@@ -18,4 +18,8 @@
     <string name="coordinates_null">Coordinates cannot be null</string>
     <string name="user_did_not_choose_coordinates">The user did not choose his coordinates. Device location coordinates are set.</string>
     <string name="device_location_set">Device location set</string>
+    <string name="your_photo">Your photo</string>
+    <string name="photo_description">This photo will be send to the backend as type %s.</string>
+    <string name="send">Send</string>
+    <string name="back">Back</string>
 </resources>

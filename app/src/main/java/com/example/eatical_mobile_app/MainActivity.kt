@@ -6,12 +6,12 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.eatical_mobile_app.databinding.ActivityMainBinding
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            openCamera()
+            openPhotoIntent("camera")
         } else {
             showDialogue(R.string.camera_permission_not_granted_error)
         }
@@ -91,22 +91,27 @@ class MainActivity : AppCompatActivity() {
         ) return
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if(location != null){
+            if (location != null) {
                 longitude = location.longitude
                 latitude = location.latitude
                 Toast.makeText(this, "$longitude $latitude", Toast.LENGTH_SHORT).show()
-            }else{
+            } else {
                 showDialogueAndFinish(R.string.location_not_on_error)
             }
         }
     }
 
-    private fun openCamera(){
-        Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show()
+    private fun openGalley() {
+        Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show()
     }
 
-    private fun openGallery(){
-        Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show()
+    private fun openPhotoIntent(source: String) {
+        val intent = Intent(this, PhotoActivity::class.java)
+        intent.putExtra("source", source)
+        intent.putExtra("type", getSelectedType())
+        intent.putExtra("longitude", longitude)
+        intent.putExtra("latitude", latitude)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,17 +134,17 @@ class MainActivity : AppCompatActivity() {
         observeState()
     }
 
-    private fun observeButtons() = with(binding){
+    private fun observeButtons() = with(binding) {
         cameraButton.setOnClickListener {
-            if(optionIsSelected()) viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
+            if (optionIsSelected()) viewModel.setState(MainStates.GETTING_CAMERA_PERMISSION)
         }
 
         galleryButton.setOnClickListener {
-            if(optionIsSelected()) viewModel.setState(MainStates.GETTING_GALLERY_PERMISSION)
+            if (optionIsSelected()) viewModel.setState(MainStates.GETTING_GALLERY_PERMISSION)
         }
 
         intervalShooterButton.setOnClickListener {
-//            if(optionIsSelected()) // TODO: Shoot Photos on interval
+            //            if(optionIsSelected()) // TODO: Shoot Photos on interval
         }
 
         mapButton.setOnClickListener{
@@ -147,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeCheckboxes() = with(binding){
+    private fun observeCheckboxes() = with(binding) {
         restaurantCheckbox.setOnClickListener {
             removeOptions()
             restaurantCheckbox.isChecked = true
@@ -166,7 +171,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeState() {
         viewModel.state.observe(this) { state ->
-            when(state){
+            when (state) {
                 MainStates.LOADING -> Unit
                 MainStates.INITIAL -> Unit
                 MainStates.GETTING_LOCATION_PERMISSION -> getLocationPermission()
@@ -177,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getLocationPermission(){
+    private fun getLocationPermission() {
         locationPermissionRequest.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
@@ -185,11 +190,11 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun getCameraPermission(){
+    private fun getCameraPermission() {
         cameraPermissionRequest.launch(Manifest.permission.CAMERA)
     }
 
-    private fun getGalleryPermission(){
+    private fun getGalleryPermission() {
         galleryPermissionRequest.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
@@ -200,14 +205,14 @@ class MainActivity : AppCompatActivity() {
         launcher.launch(intent)
     }
 
-    private fun showDialogue(@StringRes resId: Int){
+    private fun showDialogue(@StringRes resId: Int) {
         AlertDialog.Builder(this).setTitle(getString(R.string.app_name))
             .setMessage(getString(resId))
             .setNegativeButton(getString(R.string.okay)) { _, _ -> }
             .show()
     }
 
-    private fun showDialogueAndFinish(@StringRes resId: Int){
+    private fun showDialogueAndFinish(@StringRes resId: Int) {
         AlertDialog.Builder(this).setTitle(getString(R.string.app_name))
             .setMessage(getString(resId))
             .setNegativeButton(getString(R.string.okay)) { _, _ ->
@@ -219,9 +224,15 @@ class MainActivity : AppCompatActivity() {
         return restaurantCheckbox.isChecked || foodCheckbox.isChecked || menuCheckbox.isChecked
     }
 
-    private fun removeOptions() = with(binding){
+    private fun removeOptions() = with(binding) {
         restaurantCheckbox.isChecked = false
         foodCheckbox.isChecked = false
         menuCheckbox.isChecked = false
+    }
+
+    private fun getSelectedType(): String = with(binding) {
+        if (restaurantCheckbox.isChecked) return "restaurant"
+        else if (foodCheckbox.isChecked) return "food"
+        else return "menu"
     }
 }
