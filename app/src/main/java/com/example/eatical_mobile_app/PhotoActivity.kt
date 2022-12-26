@@ -19,11 +19,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.util.Base64
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import com.example.eatical_mobile_app.databinding.ActivityPhotoBinding
+import org.eclipse.paho.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.*
+import timber.log.Timber
+import java.io.InputStream
 
 class PhotoActivity : AppCompatActivity() {
 
@@ -38,10 +43,18 @@ class PhotoActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var mqttClient: MqttAndroidClient
+    // TAG
+    companion object {
+        const val TAG = "AndroidMqttClient"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        connectToBroker(this)
 
         binding.descriptionText.text = String.format(getString(R.string.photo_description), intent.getStringExtra("type"))
 
@@ -72,16 +85,28 @@ class PhotoActivity : AppCompatActivity() {
         val type = intent.getStringExtra("type")
         val longitude = intent.getStringExtra("longitude")
         val latitude = intent.getStringExtra("latitude")
+
+        val file = getFileFromUri()
+        var stringMessage = "{ " + "\"coordinates\":[${longitude},${latitude}], \"image\":\"${file}\" }"
+        stringMessage = stringMessage.replace("\n", "#")
+        publishToBroker(type.toString(), stringMessage)
+
         Toast.makeText(this, "Image sent", Toast.LENGTH_SHORT).show()
-        // TODO: Stefan needs to implement call to backend
     }
 
     private fun sendBrightnessAlert() {
         val type = "brightnessAlert"
         Toast.makeText(this, "Brightness to low!", Toast.LENGTH_SHORT).show()
         // TODO: Stefan needs to implement call to backend
+
     }
 
+    private fun getFileFromUri(): String {
+        val inputStream: InputStream? = fileUri?.let { contentResolver.openInputStream(it) }
+        val bytes: ByteArray = inputStream?.readBytes() ?: ByteArray(0)
+        inputStream?.close()
+        return Base64.encodeToString(bytes, Base64.DEFAULT)
+    }
     private fun openCamera() {
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
@@ -191,8 +216,60 @@ class PhotoActivity : AppCompatActivity() {
         binding.image.setImageURI(fileUri)
     }
 
+    fun publishToBroker(topic: String, msg: String, qos: Int = 1, retained: Boolean = false) {
+        try {
+            val message = MqttMessage()
+            message.payload = msg.toByteArray()
+            message.qos = qos
+            message.isRetained = retained
+            mqttClient.publish(topic, message, null, object : IMqttActionListener {
+                override fun onSuccess(asyncActionToken: IMqttToken?) {
+                    Timber.tag(TAG).d(msg + " published to " + topic)
+                }
+
+                override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                    Timber.tag(TAG).d("Failed to publish " + msg + " to " + topic)
+                }
+            })
+        } catch (e: MqttException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun connectToBroker(context: Context) {
+        val serverURI = "tcp://164.8.48.81:3002"
+        mqttClient = MqttAndroidClient(context, serverURI, "kotlin_client")
+        mqttClient.setCallback(object : MqttCallback {
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+                Timber.tag(TAG).d("Receive message: " + message.toString() + " from topic: " + topic)
+            }
+
+            override fun connectionLost(cause: Throwable?) {
+                Timber.tag(TAG).d("Connection lost " + cause.toString())
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                Timber.tag(TAG).d("Message is sent to broker!")
+            }
+        })
+        val options = MqttConnectOptions()
+        try {
+            mqttClient.connect(options, null, object : IMqttActionListener {
+                override fun onSuccess(asyncActionToken: IMqttToken?) {
+                    Timber.tag(TAG).d("Connection success")
+                }
+
+                override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                    Timber.tag(TAG).d("Connection failure")
+                }
+            })
+        } catch (e: MqttException) {
+            e.printStackTrace()
+        }
+
     companion object {
         private const val CAMERA_CODE = 0
         private const val GALLERY_CODE = 1
+
     }
 }

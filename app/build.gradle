@@ -85,7 +85,11 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     //MQTT
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
 
     //OSMDROID
     implementation 'org.osmdroid:osmdroid-android:6.1.14'
