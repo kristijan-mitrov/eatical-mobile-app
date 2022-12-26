@@ -12,4 +12,10 @@
     <string name="food">Food</string>
     <string name="menu">Menu</string>
     <string name="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="choose_location">Choose location</string>
+    <string name="done">Done</string>
+    <string name="data_null">Data cannot be null</string>
+    <string name="coordinates_null">Coordinates cannot be null</string>
+    <string name="user_did_not_choose_coordinates">The user did not choose his coordinates. Device location coordinates are set.</string>
+    <string name="device_location_set">Device location set</string>
 </resources>

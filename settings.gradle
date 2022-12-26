@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+//        maven {
+//            url 'https://mapbox.bintray.com/mapbox'
+//        }
     }
 }
 rootProject.name = "eatical-mobile-app"
