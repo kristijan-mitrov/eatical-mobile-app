@@ -17,13 +17,17 @@ class MapActivity : AppCompatActivity() {
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
     private lateinit var binding: ActivityMapBinding
     private lateinit var map: MapView
-    private lateinit var mapEventsReceiver: MyMapEventsReceiver
+    lateinit var mapEventsReceiver: MyMapEventsReceiver
     private lateinit var mapEventsOverlay: MapEventsOverlay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val latitude = intent.getDoubleExtra("latitude", 0.0)
+        val longitude = intent.getDoubleExtra("longitude", 0.0)
+
         Configuration.getInstance().load(this, getDefaultSharedPreferences(this));
         map = binding.map
         map.setTileSource(TileSourceFactory.MAPNIK)
@@ -32,6 +36,9 @@ class MapActivity : AppCompatActivity() {
         mapEventsReceiver = MyMapEventsReceiver(map, this)
         mapEventsOverlay = MapEventsOverlay(mapEventsReceiver)
         map.overlays.add(mapEventsOverlay)
+
+        if(latitude != 0.0 && longitude != 0.0)
+            mapEventsReceiver.setDeviceLocationMarker(GeoPoint(latitude, longitude))
 
         binding.doneButton.setOnClickListener{
             val intent = Intent(this, MapActivity::class.java)

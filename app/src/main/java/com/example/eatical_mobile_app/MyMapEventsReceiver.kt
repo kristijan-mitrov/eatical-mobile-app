@@ -29,6 +29,19 @@ class MyMapEventsReceiver(var map: MapView, var context: Context) : MapEventsRec
         return true
     }
 
+    fun setDeviceLocationMarker(p: GeoPoint){
+        point = p
+        marker = Marker(map)
+        marker!!.position.setCoords(p.latitude, p.longitude)
+        marker!!.icon = context.getResources().getDrawable(R.drawable.map_pin, null)
+        marker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        map.overlays.add(marker)
+        map.invalidate()
+        previousMarker = marker
+        println("point: " + p.toString())
+        println("MARKER SET")
+    }
+
     override fun longPressHelper(p: GeoPoint?): Boolean {
         println("Long press on " + p.toString())
         return true

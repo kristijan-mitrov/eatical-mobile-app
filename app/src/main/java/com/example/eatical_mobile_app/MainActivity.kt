@@ -194,7 +194,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getMap(){
-        launcher.launch(Intent(this, MapActivity::class.java))
+        val intent = Intent(this, MapActivity::class.java)
+        intent.putExtra("latitude", latitude)
+        intent.putExtra("longitude", longitude)
+        launcher.launch(intent)
     }
 
     private fun showDialogue(@StringRes resId: Int){
