@@ -129,4 +129,21 @@
         app:layout_constraintTop_toBottomOf="@+id/foodCheckbox"
         app:strokeColor="@color/white"
         app:strokeWidth="2dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/resetButton"
+        style="@style/outlineButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/transparentWhite"
+        app:cornerRadius="100dp"
+        android:text="@string/reset_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapButton"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@
     <string name="restaurant">Restaurant</string>
     <string name="food">Food</string>
     <string name="menu">Menu</string>
-    <string name="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="description">An app that sends data to the backend.</string>
     <string name="choose_location">Choose location</string>
     <string name="done">Done</string>
     <string name="data_null">Data cannot be null</string>
@@ -22,4 +22,5 @@
     <string name="photo_description">This photo will be send to the backend as type %s.</string>
     <string name="send">Send</string>
     <string name="back">Back</string>
+    <string name="reset_location">Reset location</string>
 </resources>
