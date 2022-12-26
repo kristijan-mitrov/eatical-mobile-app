@@ -160,6 +160,10 @@ class MainActivity : AppCompatActivity() {
         mapButton.setOnClickListener{
             viewModel.setState(MainStates.CHOOSE_LOCATION)
         }
+
+        resetButton.setOnClickListener {
+            viewModel.setState(MainStates.RESET_LOCATION)
+        }
     }
 
     private fun observeCheckboxes() = with(binding) {
@@ -189,6 +193,7 @@ class MainActivity : AppCompatActivity() {
                 MainStates.GETTING_GALLERY_PERMISSION -> getGalleryPermission()
                 MainStates.GETTING_BODY_SENSORS_PERMISSION -> getBodySensorsPermission()
                 MainStates.CHOOSE_LOCATION -> getMap()
+                MainStates.RESET_LOCATION -> resetLocation()
             }
         }
     }
@@ -214,6 +219,10 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("latitude", latitude)
         intent.putExtra("longitude", longitude)
         launcher.launch(intent)
+    }
+
+    private fun resetLocation(){
+        getLocation()
     }
 
     private fun getBodySensorsPermission() {
