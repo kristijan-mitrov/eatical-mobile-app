@@ -44,9 +44,12 @@ class PhotoActivity : AppCompatActivity() {
     }
 
     private lateinit var mqttClient: MqttAndroidClient
+
     // TAG
     companion object {
         const val TAG = "AndroidMqttClient"
+        private const val CAMERA_CODE = 0
+        private const val GALLERY_CODE = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,10 +98,7 @@ class PhotoActivity : AppCompatActivity() {
     }
 
     private fun sendBrightnessAlert() {
-        val type = "brightnessAlert"
         Toast.makeText(this, "Brightness to low!", Toast.LENGTH_SHORT).show()
-        // TODO: Stefan needs to implement call to backend
-
     }
 
     private fun getFileFromUri(): String {
@@ -266,10 +266,5 @@ class PhotoActivity : AppCompatActivity() {
         } catch (e: MqttException) {
             e.printStackTrace()
         }
-
-    companion object {
-        private const val CAMERA_CODE = 0
-        private const val GALLERY_CODE = 1
-
     }
 }
