@@ -4,4 +4,4 @@ The Eatical Mobile App is intended for sending photos via the [mqtt server](http
 
 ## Video representation
 
-![Example Video](./eatical-mobile-app/eatical_mobile/video.gif)
+![Example Video](./eatical_mobile/video.gif)
